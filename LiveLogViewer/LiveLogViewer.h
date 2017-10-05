@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include<QTextEdit>
 
+
 class LiveLogViewer : public QMainWindow
 {
 	Q_OBJECT
@@ -20,3 +21,5 @@ private:
 
 	
 };
+
+

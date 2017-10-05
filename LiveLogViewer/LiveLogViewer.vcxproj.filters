@@ -55,6 +55,9 @@
     <ClCompile Include="GeneratedFiles\qrc_LiveLogViewer.cpp">
       <Filter>Generated Files</Filter>
     </ClCompile>
+    <ClCompile Include="LiveLog_data.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="LiveLogViewer.h">
@@ -63,5 +66,10 @@
     <CustomBuild Include="LiveLogViewer.qrc">
       <Filter>Resource Files</Filter>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="LiveLog_data.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
