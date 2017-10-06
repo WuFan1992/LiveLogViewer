@@ -76,3 +76,16 @@ void LiveLog_data::show_mesure_temp_one_line()
 	}
 
 }
+
+
+QString LiveLog_data::get_time()
+{
+	return time;
+}
+
+
+double LiveLog_data::get_source_pressure()
+{
+
+	return source_pressure;
+}

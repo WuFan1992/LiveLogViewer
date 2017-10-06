@@ -27,6 +27,12 @@ public:
 	void add_temp_list(double l);
 
 
+
+	// get the value we want
+
+	QString get_time();
+	double get_source_pressure();
+
 	// only for the test
 
 	void show_source_pressure();

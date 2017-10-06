@@ -9,6 +9,7 @@
 #include <QDir>
 #include <iostream>
 #include "LiveLog_data.h"
+#include "Draw_graph.h"
 using namespace std;
 
 LiveLogViewer::LiveLogViewer(QWidget *parent)
@@ -49,6 +50,7 @@ void LiveLogViewer::OpenFile()
  
 	QStringList list;
   
+	//int files_total = all_file_name.size()
 
 	for (int i = 2; i < 3; ++i)
 	{
@@ -134,7 +136,7 @@ void LiveLogViewer::OpenFile()
 
 					}
 					//qDebug() << list;
-					data_each_line.show_target_temperature();
+					//data_each_line.show_target_temperature();
 					mesure_temp_all_lines.append(data_each_line);
 				}
 
@@ -151,6 +153,9 @@ void LiveLogViewer::OpenFile()
 
 		}
 
+
+		// use the principal function
+		Draw_Graph(mesure_temp_all_lines);
 	}
 
 }
