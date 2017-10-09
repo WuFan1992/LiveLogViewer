@@ -9,6 +9,7 @@ using namespace std;
 class LiveLog_data
 {
 
+public: 
 	QString time;
 	// pressure 
 	double source_pressure;
@@ -19,15 +20,7 @@ class LiveLog_data
 	QList<double> mesure_temp_one_line;
 
 public:
-	void set_time(QString t);
-	void add_source_press(double x);
-	void add_target_press(double y);
-	void add_mesure_press(double z);
-	void add_target_temperature(double w);
-	void add_temp_list(double l);
-
-
-
+	
 	// get the value we want
 
 	QString get_time();
