@@ -50,7 +50,7 @@
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5Widgetsd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5Widgetsd.lib;%(AdditionalDependencies);qwtd.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -70,7 +70,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Draw_graph.cpp" />
+    <ClCompile Include="Basic_Func.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_LiveLogViewer.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
     </ClCompile>
@@ -86,7 +86,6 @@
     <ClCompile Include="LiveLogViewer.cpp" />
     <ClCompile Include="LiveLog_data.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="OpenFile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="LiveLogViewer.h">
@@ -113,9 +112,7 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="display.h" />
-    <ClInclude Include="OpenFile.h" />
-    <ClInclude Include="Draw_graph.h" />
+    <ClInclude Include="Basic_Func.h" />
     <ClInclude Include="LiveLog_data.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

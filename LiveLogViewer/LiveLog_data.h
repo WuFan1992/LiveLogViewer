@@ -10,7 +10,7 @@ class LiveLog_data
 {
 
 public: 
-	QString time;
+	double time;
 	// pressure 
 	double source_pressure;
 	double target_pressure;
@@ -23,7 +23,7 @@ public:
 	
 	// get the value we want
 
-	QString get_time();
+	double get_time();
 	double get_source_pressure();
 
 	// only for the test

@@ -47,7 +47,7 @@ void LiveLog_data::show_mesure_temp_one_line()
 }
 
 
-QString LiveLog_data::get_time()
+double LiveLog_data::get_time()
 {
 	return time;
 }

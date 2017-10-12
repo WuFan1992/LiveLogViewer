@@ -58,10 +58,7 @@
     <ClCompile Include="LiveLog_data.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Draw_graph.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="OpenFile.cpp">
+    <ClCompile Include="Basic_Func.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -77,13 +74,7 @@
     <ClInclude Include="LiveLog_data.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Draw_graph.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OpenFile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="display.h">
+    <ClInclude Include="Basic_Func.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
