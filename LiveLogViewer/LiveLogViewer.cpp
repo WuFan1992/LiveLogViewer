@@ -9,6 +9,7 @@
 #include <QDir>
 #include <iostream>
 #include <QPen>
+#include <QCombobox>
 #include "qwt/qwt_plot_curve.h"
 #include "qwt/qwt_plot.h"
 #include "LiveLog_data.h"
@@ -18,15 +19,32 @@ using namespace std;
 LiveLogViewer::LiveLogViewer(QWidget *parent)
 	: QMainWindow(parent)
 {
-	QPushButton *browseButton = new QPushButton(tr("Browser"), this);
+	//auto* lay = new QVBoxLayout;
+	lay = new QVBoxLayout;
 
+	QPushButton *browseButton = new QPushButton(tr("Browser"));
 	connect(browseButton, &QPushButton::clicked, this, &LiveLogViewer::OpenFile);
-    
+	lay->addWidget(browseButton);
+
+	livelogviewer_plot = new QwtPlot;
+	livelogviewer_plot->enableAxis(QwtPlot::yRight);
+	livelogviewer_plot->setAxisTitle(QwtPlot::xBottom, tr("Runtime (s)"));
+	livelogviewer_plot->setAxisTitle(QwtPlot::yLeft, tr("Temperature (°C)"));
+	livelogviewer_plot->setAxisTitle(QwtPlot::yRight, tr("Pressure (mBar)"));
+	lay->addWidget(livelogviewer_plot);
+
+	Set_Combobox();
+	lay->addWidget(combobox);
+
+
+	auto* w = new QWidget;
+	w->setLayout(lay);
+	setCentralWidget(w);
+	showMaximized();
 }
 
 void LiveLogViewer::OpenFile()
 {
-	//int num_line = 1;  // The number of line
 	
 	int num_file_in_dir; // The number of files in the directory 
 
@@ -38,6 +56,8 @@ void LiveLogViewer::OpenFile()
 
 
 	Display_graph();
+
+
 
 }
 
@@ -180,8 +200,6 @@ void LiveLogViewer::Display_graph()
 {
 	QVector<QVector<QPointF>> Points;
 
-	livelogviewer_plot = new QwtPlot(this);
-
 	for (int j = 0; j < 20; j++)
 	{
 		Points.append(QVector<QPointF>());
@@ -189,7 +207,7 @@ void LiveLogViewer::Display_graph()
 		livelogviewer_curve.append(myplotcurve);
 	}
 
-	//QVector<QPointF> points;
+
 	for (int i = 0; i < mesure_temp_all_lines.size(); i++)
 	{
 
@@ -212,33 +230,92 @@ void LiveLogViewer::Display_graph()
 		Points[16].append(QPoint(mesure_temp_all_lines.at(i).time, mesure_temp_all_lines.at(i).mesure_temp_one_line.at(12)));
 		Points[17].append(QPoint(mesure_temp_all_lines.at(i).time, mesure_temp_all_lines.at(i).mesure_temp_one_line.at(13)));
 		Points[18].append(QPoint(mesure_temp_all_lines.at(i).time, mesure_temp_all_lines.at(i).mesure_temp_one_line.at(14)));
-		//Points[19].append(QPoint(mesure_temp_all_lines.at(i).time, mesure_temp_all_lines.at(i).mesure_temp_one_line.at(15)));
+		Points[19].append(QPoint(mesure_temp_all_lines.at(i).time, mesure_temp_all_lines.at(i).mesure_temp_one_line.at(15)));
 
 	}
 
-	
-	/*
-
-	for (int k = 0; k < 2; k++)
+	for (int k = 0; k < 20; k++)
 	{
-		livelogviewer_curve[k]->attach(livelogviewer_plot);
 		livelogviewer_curve[k]->setSamples(Points[k]);
 		switch(k) {
-		case 0: livelogviewer_curve[0]->setPen(QPen(Qt::red)); break;
-		case 1: livelogviewer_curve[0]->setPen(QPen(QColor(0,255,0))); break;
+		case 0: livelogviewer_curve[k]->setPen(QPen(QColor(0, 0, 255))); break;
+		case 1: livelogviewer_curve[k]->setPen(QPen(QColor(0,255,0))); break;
+		case 2: livelogviewer_curve[k]->setPen(QPen(QColor(255, 0, 0))); break;
+		case 3: livelogviewer_curve[k]->setPen(QPen(QColor(0, 0, 0))); break;
+		case 4: livelogviewer_curve[k]->setPen(QPen(QColor(15, 15, 15))); break;
+		case 5: livelogviewer_curve[k]->setPen(QPen(QColor(30, 30, 30))); break;
+		case 6: livelogviewer_curve[k]->setPen(QPen(QColor(45, 45, 45))); break;
+		case 7: livelogviewer_curve[k]->setPen(QPen(QColor(60, 60, 60))); break;
+		case 8: livelogviewer_curve[k]->setPen(QPen(QColor(75, 75, 75))); break;
+		case 9: livelogviewer_curve[k]->setPen(QPen(QColor(90, 90, 90))); break;
+		case 10: livelogviewer_curve[k]->setPen(QPen(QColor(105, 105, 105))); break;
+		case 11: livelogviewer_curve[k]->setPen(QPen(QColor(120, 120, 120))); break;
+		case 12: livelogviewer_curve[k]->setPen(QPen(QColor(135,135,135))); break;
+		case 13: livelogviewer_curve[k]->setPen(QPen(QColor(150,150,150))); break;
+		case 14: livelogviewer_curve[k]->setPen(QPen(QColor(165, 165, 165))); break;
+		case 15: livelogviewer_curve[k]->setPen(QPen(QColor(180, 180, 180))); break;
+		case 16: livelogviewer_curve[k]->setPen(QPen(QColor(195, 195, 195))); break;
+		case 17: livelogviewer_curve[k]->setPen(QPen(QColor(210, 210, 210))); break;
+		case 18: livelogviewer_curve[k]->setPen(QPen(QColor(225, 225, 225))); break;
+		case 19: livelogviewer_curve[k]->setPen(QPen(QColor(240, 240, 240))); break;
 
-		
 		}
-		//livelogviewer_curve[k]->setPen(QPen(Qt::red));
 		livelogviewer_curve[k]->setStyle(QwtPlotCurve::Lines);
+		if (k < 3)
+			livelogviewer_curve[k]->setYAxis(QwtPlot::yRight);
+		else
+			livelogviewer_curve[k]->setYAxis(QwtPlot::yLeft);
+		livelogviewer_curve[k]->attach(livelogviewer_plot);
 	}
-
-	
-
-
-
-	livelogviewer_plot->show();
 	livelogviewer_plot->replot();
 
-	*/
+	connect(combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), this, &LiveLogViewer::Combobox_Change);
+
+}
+
+
+
+void LiveLogViewer::Set_Combobox()
+{
+
+	combobox = new QComboBox;
+	combobox->resize(100, 20);
+	QIcon icon_stilla("C:/Users/admin/Pictures/icon_stilla.png");
+	combobox->addItem(icon_stilla, "source pressure");
+	combobox->addItem(icon_stilla, "target pressure");
+	combobox->addItem(icon_stilla, "mesure pressure");
+	combobox->addItem(icon_stilla, "target temperature");
+	combobox->addItem(icon_stilla, "temperature 1");
+	combobox->addItem(icon_stilla, "temperature 2");
+	combobox->addItem(icon_stilla, "temperature 3");
+	combobox->addItem(icon_stilla, "temperature 4");
+	combobox->addItem(icon_stilla, "temperature 5");
+	combobox->addItem(icon_stilla, "temperature 6");
+	combobox->addItem(icon_stilla, "temperature 7");
+	combobox->addItem(icon_stilla, "temperature 8");
+	combobox->addItem(icon_stilla, "temperature 9");
+	combobox->addItem(icon_stilla, "temperature 10");
+	combobox->addItem(icon_stilla, "temperature 11");
+	combobox->addItem(icon_stilla, "temperature 12");
+	combobox->addItem(icon_stilla, "temperature 13");
+	combobox->addItem(icon_stilla, "temperature 14");
+	combobox->addItem(icon_stilla, "temperature 15");
+	combobox->addItem(icon_stilla, "temperature 16");
+
+
+}
+
+
+
+
+void LiveLogViewer::Combobox_Change(int index)
+{
+
+	for (int p = 0; p < 20; p++)
+	{
+		livelogviewer_curve[p]->detach();
+	}
+
+	livelogviewer_curve[index]->attach(livelogviewer_plot);
+	
 }
