@@ -182,7 +182,7 @@ void LiveLogViewer::Select_File(QString path)
 
 	QStringList all_file_name = dir.entryList();  // get all the name of file which are in the same directory as the select file.
 
-	QStringList list;
+	//QStringList list;
 
 	for (int i = 2; i < all_file_name.size()-1; i++)   // change here
 	{
