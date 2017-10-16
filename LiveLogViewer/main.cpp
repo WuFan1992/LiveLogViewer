@@ -1,4 +1,5 @@
 #include "LiveLogViewer.h"
+#include "Widget_element.h"
 #include <QtWidgets/QApplication>
 
 int main(int argc, char *argv[])

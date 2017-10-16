@@ -1,17 +1,8 @@
 #include "LiveLog_data.h"
+#include "Widget_element.h"
 #include <iostream>
 #include <qDebug>
 using namespace std;
-
-/*
-void LiveLog_data::add_temp_list(double l)
-{
-
-	mesure_temp_one_line.append(l);
-
-}
-*/
-
 
 
 void LiveLog_data::show_source_pressure()

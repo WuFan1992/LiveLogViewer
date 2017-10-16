@@ -61,6 +61,18 @@
     <ClCompile Include="Basic_Func.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Widget_element.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_Widget_element.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_Widget_element.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="Widget_plot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="LiveLogViewer.h">
@@ -69,12 +81,18 @@
     <CustomBuild Include="LiveLogViewer.qrc">
       <Filter>Resource Files</Filter>
     </CustomBuild>
+    <CustomBuild Include="Widget_element.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="LiveLog_data.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Basic_Func.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Widget_plot.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

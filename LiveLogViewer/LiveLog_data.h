@@ -1,9 +1,7 @@
 #pragma once
-#include <QtWidgets/QMainWindow>
-#include <QMainWindow>
-#include<QTextEdit>
+
 #include <QList>
-#include <iostream>
+
 using namespace std;
 
 class LiveLog_data

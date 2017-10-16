@@ -1,3 +1,11 @@
-﻿  LiveLogViewer.cpp
+﻿  Basic_Func.cpp
+  moc_LiveLogViewer.cpp
+  moc_Widget_element.cpp
+  LiveLogViewer.cpp
+  LiveLog_data.cpp
+  Widget_element.cpp
+  Widget_plot.cpp
+  main.cpp
+  Génération de code en cours...
   LiveLogViewer.vcxproj -> C:\Users\admin\Documents\Visual Studio 2015\Projects\LiveLogViewer\x64\Debug\LiveLogViewer.exe
   LiveLogViewer.vcxproj -> C:\Users\admin\Documents\Visual Studio 2015\Projects\LiveLogViewer\x64\Debug\LiveLogViewer.pdb (Full PDB)
