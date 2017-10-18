@@ -5,6 +5,5 @@
 #include "LiveLog_data.h"
 using namespace std;
 
-
 double QString_to_Double(QString time_in_string);
 

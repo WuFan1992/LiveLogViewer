@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QList>
 #include <QVector>
+#include <QTextStream>
 
 #include "LiveLog_data.h"
 #include "Widget_plot.h"
@@ -20,7 +21,7 @@ public:
 private:
 	
 	QPushButton *browseButton;
-	QComboBox* combobox;
+	//QComboBox* combobox;
 	QVBoxLayout* lay;
 	QList<QString> Select_File();
 	QList<LiveLog_data> mesure_temp_all_lines;
@@ -32,7 +33,7 @@ private:
 	Widget_plot *widget_plot;
 
 	void Set_Button();
-	void Set_Combobox();
+	//void Set_Combobox();
 
 	void OpenFile();
 	bool File_Existing(QList<QString> Filename_list);

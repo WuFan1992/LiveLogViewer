@@ -12,6 +12,7 @@ LiveLogViewer::LiveLogViewer(QWidget *parent)
 	setup_resolution();
 }
 
+
 void LiveLogViewer::setup_resolution()
 {
 	resize(1024,768);

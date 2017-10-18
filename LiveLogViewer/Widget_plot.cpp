@@ -3,6 +3,12 @@
 Widget_plot::Widget_plot(QWidget *parent)
 {
 	Set_Plot();
+	// Set the legend
+	legend = new QwtLegend;
+	legend->setDefaultItemMode(QwtLegendData::Checkable);
+	livelogviewer_plot->insertLegend(legend, QwtPlot::RightLegend);
+
+	connect(legend, &QwtLegend::checked, this,&Widget_plot::Legend_Checked);
 
 }
 
@@ -13,7 +19,7 @@ void Widget_plot::Set_Plot()
 	livelogviewer_plot = new QwtPlot;
 	livelogviewer_plot->enableAxis(QwtPlot::yRight);
 	livelogviewer_plot->setAxisTitle(QwtPlot::xBottom, tr("Runtime (s)"));
-	livelogviewer_plot->setAxisTitle(QwtPlot::yLeft, tr("Temperature (°C)"));
+	livelogviewer_plot->setAxisTitle(QwtPlot::yLeft, tr("Temperature (°C)*100"));
 	livelogviewer_plot->setAxisTitle(QwtPlot::yRight, tr("Pressure (mBar)"));
 
 }
@@ -26,8 +32,22 @@ void Widget_plot::Display_graph(QVector<QPointF> *Points)
 
 	for (int i = 0; i < 20; i++)
 	{
-		QwtPlotCurve* myplotcurve = new QwtPlotCurve;
-		livelogviewer_curve.append(myplotcurve);
+		//QwtPlotCurve* myplotcurve = new QwtPlotCurve;
+		//livelogviewer_curve.append(myplotcurve);
+		QwtPlotCurve* myplotcurve;
+	     if (i ==0)
+		 {myplotcurve = new QwtPlotCurve("Source Pressure");}
+		 else if (i == 1)
+		 {myplotcurve = new QwtPlotCurve("Target Pressure");}
+		 else if (i == 2)
+		 {myplotcurve = new QwtPlotCurve("Mesure Pressure");}
+		 else if (i == 3)
+		 {myplotcurve = new QwtPlotCurve("Target Temperature");}
+		 else
+		 {myplotcurve = new QwtPlotCurve(tr("Temperature %1").arg(i-3));}
+		 livelogviewer_curve.append(myplotcurve);
+
+
 	}
 
 
@@ -36,19 +56,29 @@ void Widget_plot::Display_graph(QVector<QPointF> *Points)
 		livelogviewer_curve[k]->setSamples(Points[k]);
 		livelogviewer_curve[k]->setPen(QPen(Color_list.at(k)));
 		livelogviewer_curve[k]->setStyle(QwtPlotCurve::Lines);
+		//livelogviewer_curve[k]->setSymbol(new QwtSymbol(QwtSymbol::XCross, Qt::NoBrush,QPen(Qt::darkMagenta), QSize(5, 5)));
+		//livelogviewer_curve[k]->setStyle(QwtPlotCurve::NoCurve);
 		if (k < 3)
+		{
+			Show_Curve(livelogviewer_curve[k], true);
 			livelogviewer_curve[k]->setYAxis(QwtPlot::yRight);
+		}
 		else
+		{
+			Show_Curve(livelogviewer_curve[k], false);
 			livelogviewer_curve[k]->setYAxis(QwtPlot::yLeft);
+
+		}
 		livelogviewer_curve[k]->attach(livelogviewer_plot);
 	}
+	
 	livelogviewer_plot->replot();
 
 
 }
 
 
-
+/*
 void Widget_plot::Combobox_Change(int index)
 {
 	for (int p = 0; p < 20; p++)
@@ -59,4 +89,34 @@ void Widget_plot::Combobox_Change(int index)
 	livelogviewer_curve[index]->attach(livelogviewer_plot);
 	livelogviewer_plot->replot();
 
+}
+*/
+void Widget_plot::Legend_Checked(const QVariant &iteminfo, bool on)
+{
+	QwtPlotItem *plotitem = livelogviewer_plot->infoToItem(iteminfo); // iteminfo contains the information of the type of the objet, infotoitem take the information and verify if it correspond to the given type.
+	if (plotitem)
+		Show_Curve(plotitem, on);
+
+
+}
+
+
+void Widget_plot::Show_Curve(QwtPlotItem *item, bool on)
+{
+	item->setVisible(on);  // on can be true or false. if true , setvisible will set this item to be visible , if false , setvisible will set this item unseen.
+	
+	QwtLegend *lgd = qobject_cast<QwtLegend *>(legend);
+	QList<QWidget *> legendWidgets = lgd->legendWidgets(livelogviewer_plot->itemToInfo(item));
+
+	if (legendWidgets.size() == 1)
+	{
+		QwtLegendLabel *legendlabel = qobject_cast<QwtLegendLabel *>(legendWidgets[0]);
+
+		if (legendlabel)
+			legendlabel->setChecked(on);
+
+	}
+
+	livelogviewer_plot->replot();
+	
 }

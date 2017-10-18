@@ -9,11 +9,11 @@ Widget_element::Widget_element(QWidget *parent)
 
 	widget_plot = new Widget_plot;
     lay = new QVBoxLayout;
-	combobox = new QComboBox;
+	//combobox = new QComboBox;
 
 	Set_Button();
 	lay->addWidget(widget_plot->livelogviewer_plot);
-	Set_Combobox();
+	//Set_Combobox();
 	
 
 	setLayout(lay);
@@ -26,7 +26,7 @@ void Widget_element::Set_Button()
 	connect(browseButton, &QPushButton::clicked, this, &Widget_element::OpenFile);
 
 }
-
+/*
 void Widget_element::Set_Combobox()
 {
 	combobox->resize(100, 20);
@@ -48,7 +48,7 @@ void Widget_element::Set_Combobox()
 
 }
 
-
+*/
 
 
 void Widget_element::OpenFile()
@@ -93,8 +93,10 @@ bool Widget_element::File_Existing(QList<QString> Filename_list)
 
 void Widget_element::Read_Data(QList<QString> Filename_list)
 {
-
-
+	QFile exports("C:\\Users\\admin\\Documents\\Visual Studio 2015\\Projects\\export.txt");
+	exports.open(QFile::WriteOnly | QIODevice::Truncate);
+	QTextStream out(&exports);
+	
 	QRegExp rx_time("(\\d*\\:\\d*\\:\\d*)");
 	QRegExp rx_press_tempe("(\\d*\\.\\d+)");
 
@@ -119,6 +121,7 @@ void Widget_element::Read_Data(QList<QString> Filename_list)
 
 
 				double time_in_double = QString_to_Double(rx_time.cap(1));
+
 				data_each_line.time = time_in_double;
 
 				// colone number
@@ -162,12 +165,15 @@ void Widget_element::Read_Data(QList<QString> Filename_list)
 
 				}
 				//qDebug() << list;
-				//data_each_line.show_target_temperature();
+				//data_each_line.show_mesure_temperature();
+				//qDebug() << "line" << data_each_line.time << ": " << data_each_line.mesure_temp_one_line[1];
+				out << data_each_line.time << '\t'<< data_each_line.mesure_temp_one_line[1]*100<<'\n';
 				mesure_temp_all_lines.append(data_each_line);
 			}
 			num_line++;
 		}
 		file.close();
+		
 	}
 
 	//QVector<QPointF> Points[20];
@@ -176,19 +182,19 @@ void Widget_element::Read_Data(QList<QString> Filename_list)
 	for (int i = 0; i < mesure_temp_all_lines.size(); i++)
 	{
 
-		Points[0].append(QPoint(mesure_temp_all_lines.at(i).time, mesure_temp_all_lines.at(i).source_pressure));
-		Points[1].append(QPoint(mesure_temp_all_lines.at(i).time, mesure_temp_all_lines.at(i).target_pressure));
-		Points[2].append(QPoint(mesure_temp_all_lines.at(i).time, mesure_temp_all_lines.at(i).mesure_pressure));
-		Points[3].append(QPoint(mesure_temp_all_lines.at(i).time, mesure_temp_all_lines.at(i).target_temperature));
+		Points[0].append(QPoint(mesure_temp_all_lines.at(i).time, mesure_temp_all_lines.at(i).source_pressure*100));
+		Points[1].append(QPoint(mesure_temp_all_lines.at(i).time, mesure_temp_all_lines.at(i).target_pressure*100));
+		Points[2].append(QPoint(mesure_temp_all_lines.at(i).time, mesure_temp_all_lines.at(i).mesure_pressure*100));
+		Points[3].append(QPoint(mesure_temp_all_lines.at(i).time, mesure_temp_all_lines.at(i).target_temperature*100));
 
 		for (int j = 0; j < 16; j++)
 		{
-			Points[j + 4].append(QPoint(mesure_temp_all_lines.at(i).time, mesure_temp_all_lines.at(i).mesure_temp_one_line.at(j)));
+			Points[j + 4].append(QPoint(mesure_temp_all_lines.at(i).time, mesure_temp_all_lines.at(i).mesure_temp_one_line.at(j)*100));
 		}
 	}
 
 
-
+	exports.close();
 
 }
 
