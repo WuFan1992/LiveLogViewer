@@ -12,7 +12,7 @@ Widget_element::Widget_element(QWidget *parent)
 	//combobox = new QComboBox;
 
 	Set_Button();
-	lay->addWidget(widget_plot->livelogviewer_plot);
+	lay->addWidget(widget_plot);
 	//Set_Combobox();
 	
 

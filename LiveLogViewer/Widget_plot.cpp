@@ -1,5 +1,10 @@
 #include "Widget_plot.h"
 
+#include <QVBoxLayout>
+#include <qpushbutton.h>
+
+#include <qwt/qwt_plot_magnifier.h>
+
 Widget_plot::Widget_plot(QWidget *parent)
 {
 	Set_Plot();
@@ -8,6 +13,14 @@ Widget_plot::Widget_plot(QWidget *parent)
 	legend->setDefaultItemMode(QwtLegendData::Checkable);
 	livelogviewer_plot->insertLegend(legend, QwtPlot::RightLegend);
 
+	// Set the panner
+	plot_panner = new QwtPlotPanner(livelogviewer_plot->canvas());
+
+	//Set the zoomer
+	auto* magnifier = new QwtPlotMagnifier(livelogviewer_plot->canvas());
+	magnifier->setMouseButton(Qt::NoButton);
+	magnifier->setWheelFactor(1.5);
+
 	connect(legend, &QwtLegend::checked, this,&Widget_plot::Legend_Checked);
 
 }
@@ -15,12 +28,15 @@ Widget_plot::Widget_plot(QWidget *parent)
 
 void Widget_plot::Set_Plot()
 {
+	auto* lay = new QVBoxLayout;
 
 	livelogviewer_plot = new QwtPlot;
 	livelogviewer_plot->enableAxis(QwtPlot::yRight);
 	livelogviewer_plot->setAxisTitle(QwtPlot::xBottom, tr("Runtime (s)"));
 	livelogviewer_plot->setAxisTitle(QwtPlot::yLeft, tr("Temperature (°C)*100"));
 	livelogviewer_plot->setAxisTitle(QwtPlot::yRight, tr("Pressure (mBar)"));
+	lay->addWidget(livelogviewer_plot);
+	setLayout(lay);
 
 }
 
@@ -56,8 +72,6 @@ void Widget_plot::Display_graph(QVector<QPointF> *Points)
 		livelogviewer_curve[k]->setSamples(Points[k]);
 		livelogviewer_curve[k]->setPen(QPen(Color_list.at(k)));
 		livelogviewer_curve[k]->setStyle(QwtPlotCurve::Lines);
-		//livelogviewer_curve[k]->setSymbol(new QwtSymbol(QwtSymbol::XCross, Qt::NoBrush,QPen(Qt::darkMagenta), QSize(5, 5)));
-		//livelogviewer_curve[k]->setStyle(QwtPlotCurve::NoCurve);
 		if (k < 3)
 		{
 			Show_Curve(livelogviewer_curve[k], true);
@@ -98,6 +112,15 @@ void Widget_plot::Legend_Checked(const QVariant &iteminfo, bool on)
 		Show_Curve(plotitem, on);
 
 
+}
+
+void Widget_plot::mouseDoubleClickEvent(QMouseEvent * evt)
+{
+	livelogviewer_plot->setAxisAutoScale(QwtPlot::xBottom, true);
+	livelogviewer_plot->setAxisAutoScale(QwtPlot::yLeft, true);
+	livelogviewer_plot->setAxisAutoScale(QwtPlot::yRight, true);
+	livelogviewer_plot->updateAxes();
+	livelogviewer_plot->replot();
 }
 
 
