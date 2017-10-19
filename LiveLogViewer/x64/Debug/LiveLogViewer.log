@@ -1,11 +1,4 @@
-﻿  Basic_Func.cpp
-  moc_LiveLogViewer.cpp
-  moc_Widget_element.cpp
-  LiveLogViewer.cpp
-  LiveLog_data.cpp
-  Widget_element.cpp
-  Widget_plot.cpp
-  main.cpp
-  Génération de code en cours...
+﻿  Widget_plot.cpp
+qrc_LiveLogViewer.obj : warning LNK4099: PDB 'vc140.pdb' n'a pu Ωtre trouvΘ avec 'qrc_LiveLogViewer.obj' ou sur 'C:\Users\admin\Documents\Visual Studio 2015\Projects\LiveLogViewer\x64\Debug\vc140.pdb'á; l'objet sera liΘ sans informations de dΘbogage
   LiveLogViewer.vcxproj -> C:\Users\admin\Documents\Visual Studio 2015\Projects\LiveLogViewer\x64\Debug\LiveLogViewer.exe
   LiveLogViewer.vcxproj -> C:\Users\admin\Documents\Visual Studio 2015\Projects\LiveLogViewer\x64\Debug\LiveLogViewer.pdb (Full PDB)
