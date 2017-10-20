@@ -2,7 +2,7 @@
 #include "Widget_plot.h"
 #include "LiveLog_data.h"
 #include "Basic_Func.h"
-
+using DATA = std::array<QVector<QPointF>, 20>;
 Widget_element::Widget_element(QWidget *parent)
 {
 	
@@ -14,21 +14,17 @@ Widget_element::Widget_element(QWidget *parent)
 	lay->addWidget(widget_plot);
 
 	setLayout(lay);
-
-	//combobox = new QComboBox;
-	//Set_Combobox();
-	
 	
 }
 
 void Widget_element::Set_Button()
 {
-	browseButton = new QPushButton(tr("Browser"));
+	QPushButton *browseButton = new QPushButton(tr("Browser"));
 	lay->addWidget(browseButton);
 
 	connect(browseButton, &QPushButton::clicked, this, &Widget_element::OpenFile);
 
-	exportButton = new QPushButton(tr("Export"));
+	QPushButton *exportButton = new QPushButton(tr("Export"));
 	lay->addWidget(exportButton);
 	connect(exportButton, &QPushButton::clicked, this, &Widget_element::Export_Plot);
 
@@ -41,30 +37,6 @@ void Widget_element::Export_Plot()
 	renderer->exportTo(widget_plot->livelogviewer_plot, "LiveLogViewer_plot.pdf");
 }
 
-/*
-void Widget_element::Set_Combobox()
-{
-	combobox->resize(100, 20);
-	QIcon icon_stilla("C:/Users/admin/Pictures/icon_stilla.png");
-	combobox->addItem(icon_stilla, "source pressure");
-	combobox->addItem(icon_stilla, "target pressure");
-	combobox->addItem(icon_stilla, "mesure pressure");
-	combobox->addItem(icon_stilla, "target temperature");
-
-	for (int i = 1; i < 17; i++)
-	{
-		combobox->addItem(icon_stilla, tr("Temperature %1").arg(i));
-
-	}
-	lay->addWidget(combobox);
-
-
-	connect(combobox, static_cast<void(QComboBox::*)(int)>(&QComboBox::currentIndexChanged), widget_plot, &Widget_plot::Combobox_Change);
-
-}
-
-*/
-
 
 void Widget_element::OpenFile()
 {
@@ -73,7 +45,7 @@ void Widget_element::OpenFile()
 
 	if (File_Existing(Filename_list))
 	{
-		Read_Data(Filename_list);
+		DATA Points = Read_Data(Filename_list);
 		widget_plot->Display_graph(Points);
 	}
 	
@@ -106,8 +78,10 @@ bool Widget_element::File_Existing(QList<QString> Filename_list)
 
 
 
-void Widget_element::Read_Data(QList<QString> Filename_list)
+DATA Widget_element::Read_Data(QList<QString> Filename_list)
 {
+	
+	DATA Points;
 	QFile exports("C:\\Users\\admin\\Documents\\Visual Studio 2015\\Projects\\export.txt");
 	exports.open(QFile::WriteOnly | QIODevice::Truncate);
 	QTextStream out(&exports);
@@ -179,9 +153,7 @@ void Widget_element::Read_Data(QList<QString> Filename_list)
 					pos_rx_press_tempe += rx_press_tempe.matchedLength();
 
 				}
-				//qDebug() << list;
-				//data_each_line.show_mesure_temperature();
-				//qDebug() << "line" << data_each_line.time << ": " << data_each_line.mesure_temp_one_line[1];
+	
 				out << data_each_line.time << '\t'<< data_each_line.mesure_temp_one_line[1]*100<<'\n';
 				mesure_temp_all_lines.append(data_each_line);
 			}
@@ -190,8 +162,6 @@ void Widget_element::Read_Data(QList<QString> Filename_list)
 		file.close();
 		
 	}
-
-	//QVector<QPointF> Points[20];
 
 
 	for (int i = 0; i < mesure_temp_all_lines.size(); i++)
@@ -210,7 +180,7 @@ void Widget_element::Read_Data(QList<QString> Filename_list)
 
 
 	exports.close();
-
+	return Points;
 }
 
 

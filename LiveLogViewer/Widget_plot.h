@@ -17,21 +17,18 @@
 #include <QList>
 #include <QVector>
 #include <QPushButton>
-
+#include <array>
 
 class Widget_plot : public QWidget
 {
 	Q_OBJECT
-
+	
 public:
 	Widget_plot(QWidget *parent = Q_NULLPTR);
 	virtual ~Widget_plot() = default;
 
 	QVector<QwtPlotCurve*> livelogviewer_curve; 
 	QwtPlot* livelogviewer_plot;
-
-	QPushButton *exportButton;
-	
 
 private:
 	QwtLegend *legend;
@@ -43,9 +40,9 @@ private:
 	void Set_Panner_Magnifier();
 	
 public:
-	void Display_graph(QVector<QPointF> *Points); 
-	//void Combobox_Change(int index);
-
+	using DATA = std::array<QVector<QPointF>, 20>;
+	void Initialize_Display();
+	void Display_graph(DATA Points); 
 	void Show_Curve(QwtPlotItem *item, bool on);
 	void Legend_Checked(const QVariant &iteminfo, bool on);
 
