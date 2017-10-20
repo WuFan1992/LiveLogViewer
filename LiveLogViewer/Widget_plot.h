@@ -14,6 +14,10 @@
 #include "qwt/qwt_plot_zoomer.h"
 #include "qwt/qwt_event_pattern.h"
 
+#include <QList>
+#include <QVector>
+#include <QPushButton>
+
 
 class Widget_plot : public QWidget
 {
@@ -24,21 +28,23 @@ public:
 	virtual ~Widget_plot() = default;
 
 	QVector<QwtPlotCurve*> livelogviewer_curve; 
+	QwtPlot* livelogviewer_plot;
+
+	QPushButton *exportButton;
 	
 
 private:
-
-	QwtPlot* livelogviewer_plot;
 	QwtLegend *legend;
 	QwtPlotPanner *plot_panner;
-	
+
 private:
 	void Set_Plot(); 
-
+	void Set_Legend();
+	void Set_Panner_Magnifier();
+	
 public:
 	void Display_graph(QVector<QPointF> *Points); 
 	//void Combobox_Change(int index);
-
 
 	void Show_Curve(QwtPlotItem *item, bool on);
 	void Legend_Checked(const QVariant &iteminfo, bool on);

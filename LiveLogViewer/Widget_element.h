@@ -9,6 +9,10 @@
 #include "LiveLog_data.h"
 #include "Widget_plot.h"
 
+#include "qwt/qwt_plot_renderer.h"
+#include "qtoolbutton.h"
+#include "qtoolbar.h"
+
 
 class Widget_element : public QWidget
 {
@@ -18,9 +22,11 @@ public:
 	Widget_element(QWidget *parent = Q_NULLPTR);
 	virtual ~Widget_element() = default;
 
+	
 private:
 	
 	QPushButton *browseButton;
+	QPushButton *exportButton;
 	//QComboBox* combobox;
 	QVBoxLayout* lay;
 	QList<QString> Select_File();
@@ -36,6 +42,7 @@ private:
 	//void Set_Combobox();
 
 	void OpenFile();
+	void Export_Plot();
 	bool File_Existing(QList<QString> Filename_list);
 	void Read_Data(QList<QString> Filename_list);
 

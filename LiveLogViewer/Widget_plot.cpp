@@ -8,20 +8,10 @@
 Widget_plot::Widget_plot(QWidget *parent)
 {
 	Set_Plot();
-	// Set the legend
-	legend = new QwtLegend;
-	legend->setDefaultItemMode(QwtLegendData::Checkable);
-	livelogviewer_plot->insertLegend(legend, QwtPlot::RightLegend);
-
-	// Set the panner
-	plot_panner = new QwtPlotPanner(livelogviewer_plot->canvas());
-
-	//Set the zoomer
-	auto* magnifier = new QwtPlotMagnifier(livelogviewer_plot->canvas());
-	magnifier->setMouseButton(Qt::NoButton);
-	magnifier->setWheelFactor(1.5);
-
+	Set_Legend();
+	Set_Panner_Magnifier();
 	connect(legend, &QwtLegend::checked, this,&Widget_plot::Legend_Checked);
+
 
 }
 
@@ -40,16 +30,39 @@ void Widget_plot::Set_Plot()
 
 }
 
+void Widget_plot::Set_Legend()
+{
+	
+	legend = new QwtLegend;
+	legend->setDefaultItemMode(QwtLegendData::Checkable);
+	livelogviewer_plot->insertLegend(legend, QwtPlot::RightLegend);
+
+
+}
+
+
+void Widget_plot::Set_Panner_Magnifier()
+{
+
+	// Set the panner
+	plot_panner = new QwtPlotPanner(livelogviewer_plot->canvas());
+
+	//Set the magnifier
+	auto* magnifier = new QwtPlotMagnifier(livelogviewer_plot->canvas());
+	magnifier->setMouseButton(Qt::NoButton);
+	magnifier->setWheelFactor(1.5);
+
+
+}
 
 
 void Widget_plot::Display_graph(QVector<QPointF> *Points)
 {
+
 	QList<QColor> Color_list = { QColor(0,0,255),QColor(0,255,0),QColor(255, 0, 0), QColor(0, 0, 0) ,QColor(15, 15, 15),QColor(30, 30, 30),QColor(45, 45, 45),QColor(60, 60, 60),QColor(75, 75, 75),QColor(90, 90, 90),QColor(105, 105, 105),QColor(120, 120, 120),QColor(135,135,135),QColor(150,150,150),QColor(165, 165, 165),QColor(180, 180, 180),QColor(195, 195, 195),QColor(210, 210, 210),QColor(225, 225, 225),QColor(240, 240, 240) };
 
 	for (int i = 0; i < 20; i++)
 	{
-		//QwtPlotCurve* myplotcurve = new QwtPlotCurve;
-		//livelogviewer_curve.append(myplotcurve);
 		QwtPlotCurve* myplotcurve;
 	     if (i ==0)
 		 {myplotcurve = new QwtPlotCurve("Source Pressure");}
@@ -74,21 +87,23 @@ void Widget_plot::Display_graph(QVector<QPointF> *Points)
 		livelogviewer_curve[k]->setStyle(QwtPlotCurve::Lines);
 		if (k < 3)
 		{
-			Show_Curve(livelogviewer_curve[k], true);
 			livelogviewer_curve[k]->setYAxis(QwtPlot::yRight);
+			livelogviewer_curve[k]->attach(livelogviewer_plot);
+			Show_Curve(livelogviewer_curve[k], true);
 		}
 		else
 		{
-			Show_Curve(livelogviewer_curve[k], false);
+			
 			livelogviewer_curve[k]->setYAxis(QwtPlot::yLeft);
+			livelogviewer_curve[k]->attach(livelogviewer_plot);
+			Show_Curve(livelogviewer_curve[k], false);
 
 		}
-		livelogviewer_curve[k]->attach(livelogviewer_plot);
+		//livelogviewer_curve[k]->attach(livelogviewer_plot);
 	}
-	
+
 	livelogviewer_plot->replot();
-
-
+	
 }
 
 
@@ -127,7 +142,6 @@ void Widget_plot::mouseDoubleClickEvent(QMouseEvent * evt)
 void Widget_plot::Show_Curve(QwtPlotItem *item, bool on)
 {
 	item->setVisible(on);  // on can be true or false. if true , setvisible will set this item to be visible , if false , setvisible will set this item unseen.
-	
 	QwtLegend *lgd = qobject_cast<QwtLegend *>(legend);
 	QList<QWidget *> legendWidgets = lgd->legendWidgets(livelogviewer_plot->itemToInfo(item));
 
@@ -139,7 +153,7 @@ void Widget_plot::Show_Curve(QwtPlotItem *item, bool on)
 			legendlabel->setChecked(on);
 
 	}
-
+	
 	livelogviewer_plot->replot();
 	
 }

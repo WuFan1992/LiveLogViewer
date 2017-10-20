@@ -9,23 +9,38 @@ Widget_element::Widget_element(QWidget *parent)
 
 	widget_plot = new Widget_plot;
     lay = new QVBoxLayout;
-	//combobox = new QComboBox;
-
+	
 	Set_Button();
 	lay->addWidget(widget_plot);
-	//Set_Combobox();
-	
 
 	setLayout(lay);
+
+	//combobox = new QComboBox;
+	//Set_Combobox();
+	
+	
 }
 
 void Widget_element::Set_Button()
 {
 	browseButton = new QPushButton(tr("Browser"));
 	lay->addWidget(browseButton);
+
 	connect(browseButton, &QPushButton::clicked, this, &Widget_element::OpenFile);
 
+	exportButton = new QPushButton(tr("Export"));
+	lay->addWidget(exportButton);
+	connect(exportButton, &QPushButton::clicked, this, &Widget_element::Export_Plot);
+
 }
+
+
+void Widget_element::Export_Plot()
+{
+	QwtPlotRenderer *renderer = new QwtPlotRenderer;
+	renderer->exportTo(widget_plot->livelogviewer_plot, "LiveLogViewer_plot.pdf");
+}
+
 /*
 void Widget_element::Set_Combobox()
 {
@@ -61,7 +76,7 @@ void Widget_element::OpenFile()
 		Read_Data(Filename_list);
 		widget_plot->Display_graph(Points);
 	}
-
+	
 }
 
 bool Widget_element::File_Existing(QList<QString> Filename_list)
