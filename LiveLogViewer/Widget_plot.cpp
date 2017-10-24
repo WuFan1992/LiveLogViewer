@@ -20,6 +20,7 @@ Widget_plot::Widget_plot(QWidget *parent)
 }
 
 
+
 void Widget_plot::Set_Plot()
 {
 	auto* lay = new QVBoxLayout;
@@ -27,7 +28,7 @@ void Widget_plot::Set_Plot()
 	livelogviewer_plot = new QwtPlot;
 	livelogviewer_plot->enableAxis(QwtPlot::yRight);
 	livelogviewer_plot->setAxisTitle(QwtPlot::xBottom, tr("Runtime (s)"));
-	livelogviewer_plot->setAxisTitle(QwtPlot::yLeft, tr("Temperature (°C)*100"));
+	livelogviewer_plot->setAxisTitle(QwtPlot::yLeft, tr("Temperature (°C)"));
 	livelogviewer_plot->setAxisTitle(QwtPlot::yRight, tr("Pressure (mBar)"));
 	lay->addWidget(livelogviewer_plot);
 	setLayout(lay);

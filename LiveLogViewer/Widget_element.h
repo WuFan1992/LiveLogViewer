@@ -10,6 +10,7 @@
 #include "LiveLog_data.h"
 #include "Widget_plot.h"
 
+
 #include "qwt/qwt_plot_renderer.h"
 #include "qtoolbutton.h"
 #include "qtoolbar.h"
@@ -35,8 +36,10 @@ private:
 	//DATA Points;
 
 	Widget_plot *widget_plot;
+	
 
 	void Set_Button();
+	//void Infor_DateTime();
 	void OpenFile();
 	void Export_Plot();
 	bool File_Existing(QList<QString> Filename_list);

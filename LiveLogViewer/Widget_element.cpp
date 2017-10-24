@@ -2,6 +2,7 @@
 #include "Widget_plot.h"
 #include "LiveLog_data.h"
 #include "Basic_Func.h"
+
 using DATA = std::array<QVector<QPointF>, 20>;
 Widget_element::Widget_element(QWidget *parent)
 {
@@ -12,6 +13,8 @@ Widget_element::Widget_element(QWidget *parent)
 	
 	Set_Button();
 	lay->addWidget(widget_plot);
+
+	//Infor_DateTime();
 
 	setLayout(lay);
 	
@@ -29,7 +32,15 @@ void Widget_element::Set_Button()
 	connect(exportButton, &QPushButton::clicked, this, &Widget_element::Export_Plot);
 
 }
-
+/*
+void Widget_element::Infor_DateTime()
+{
+	QLabel *label_infor = new QLabel;
+	//label_infor->setText(tr("Begin Date is %1 ").arg((begin_datetime->begin_date).toString()));
+	//label_infor->setText(tr("Begin Time is %1 ").arg((begin_datetime->begin_time).toString()));
+	lay->addWidget(label_infor);
+}
+*/
 
 void Widget_element::Export_Plot()
 {
@@ -82,11 +93,12 @@ DATA Widget_element::Read_Data(QList<QString> Filename_list)
 {
 	
 	DATA Points;
+	auto *begin_datetime = new BEGIN_DATETIME;
 	QFile exports("C:\\Users\\admin\\Documents\\Visual Studio 2015\\Projects\\export.txt");
 	exports.open(QFile::WriteOnly | QIODevice::Truncate);
 	QTextStream out(&exports);
 	
-	QRegExp rx_time("(\\d*\\:\\d*\\:\\d*)");
+	QRegExp rx_time("(\\d*\\.\\d*\\.\\d*\/\\d*\\:\\d*\\:\\d*)");
 	QRegExp rx_press_tempe("(\\d*\\.\\d+)");
 
 	qDebug() << Filename_list.size();
@@ -99,6 +111,7 @@ DATA Widget_element::Read_Data(QList<QString> Filename_list)
 		while (!in.atEnd())
 		{
 			QString line = in.readLine();
+
 			// initialize Class LiveLog_data which represent one line in the text
 			LiveLog_data data_each_line;
 
@@ -108,8 +121,7 @@ DATA Widget_element::Read_Data(QList<QString> Filename_list)
 				int pos_rx_press_tempe = 0; // position of values of pression and temperature in one line
 				pos_rx_time = rx_time.indexIn(line, pos_rx_time);
 
-
-				double time_in_double = QString_to_Double(rx_time.cap(1));
+				double time_in_double = Set_Time(rx_time.cap(1),i,num_line,begin_datetime);
 
 				data_each_line.time = time_in_double;
 
@@ -121,6 +133,7 @@ DATA Widget_element::Read_Data(QList<QString> Filename_list)
 					if (num_colone == 3)
 					{
 						data_each_line.source_pressure = rx_press_tempe.cap(1).toDouble();
+						
 
 					}
 					else if (num_colone == 4)
@@ -154,7 +167,7 @@ DATA Widget_element::Read_Data(QList<QString> Filename_list)
 
 				}
 	
-				out << data_each_line.time << '\t'<< data_each_line.mesure_temp_one_line[1]*100<<'\n';
+				//out << data_each_line.time << '\t'<< data_each_line.mesure_temp_one_line[1]*100<<'\n';
 				mesure_temp_all_lines.append(data_each_line);
 			}
 			num_line++;
@@ -167,14 +180,14 @@ DATA Widget_element::Read_Data(QList<QString> Filename_list)
 	for (int i = 0; i < mesure_temp_all_lines.size(); i++)
 	{
 
-		Points[0].append(QPoint(mesure_temp_all_lines.at(i).time, mesure_temp_all_lines.at(i).source_pressure*100));
-		Points[1].append(QPoint(mesure_temp_all_lines.at(i).time, mesure_temp_all_lines.at(i).target_pressure*100));
-		Points[2].append(QPoint(mesure_temp_all_lines.at(i).time, mesure_temp_all_lines.at(i).mesure_pressure*100));
-		Points[3].append(QPoint(mesure_temp_all_lines.at(i).time, mesure_temp_all_lines.at(i).target_temperature*100));
+		Points[0].append(QPointF(mesure_temp_all_lines.at(i).time, mesure_temp_all_lines.at(i).source_pressure));
+		Points[1].append(QPointF(mesure_temp_all_lines.at(i).time, mesure_temp_all_lines.at(i).target_pressure));
+		Points[2].append(QPointF(mesure_temp_all_lines.at(i).time, mesure_temp_all_lines.at(i).mesure_pressure));
+		Points[3].append(QPointF(mesure_temp_all_lines.at(i).time, mesure_temp_all_lines.at(i).target_temperature));
 
 		for (int j = 0; j < 16; j++)
 		{
-			Points[j + 4].append(QPoint(mesure_temp_all_lines.at(i).time, mesure_temp_all_lines.at(i).mesure_temp_one_line.at(j)*100));
+			Points[j + 4].append(QPointF(mesure_temp_all_lines.at(i).time, mesure_temp_all_lines.at(i).mesure_temp_one_line.at(j)));
 		}
 	}
 

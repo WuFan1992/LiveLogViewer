@@ -17,6 +17,7 @@
 #include <QList>
 #include <QVector>
 #include <QPushButton>
+#include <QLabel>
 #include <array>
 
 class Widget_plot : public QWidget
@@ -38,6 +39,7 @@ private:
 	void Set_Plot(); 
 	void Set_Legend();
 	void Set_Panner_Magnifier();
+	
 	
 public:
 	using DATA = std::array<QVector<QPointF>, 20>;

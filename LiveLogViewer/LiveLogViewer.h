@@ -1,6 +1,5 @@
 #pragma once
 #include <QMainWindow>
-
 #include "Widget_element.h"
 
 
