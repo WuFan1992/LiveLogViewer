@@ -1,3 +1,3 @@
 ﻿  Widget_element.cpp
-Widget_element.cpp(101): warning C4129: '/' : caractère de séquence d'échappement non reconnu
+Widget_element.cpp(110): warning C4129: '/' : caractère de séquence d'échappement non reconnu
   LiveLogViewer.vcxproj -> C:\Users\admin\Documents\Visual Studio 2015\Projects\LiveLogViewer\x64\Release\LiveLogViewer.exe

@@ -14,8 +14,6 @@ Widget_element::Widget_element(QWidget *parent)
 	Set_Button();
 	lay->addWidget(widget_plot);
 
-	//Infor_DateTime();
-
 	setLayout(lay);
 	
 }
@@ -32,15 +30,24 @@ void Widget_element::Set_Button()
 	connect(exportButton, &QPushButton::clicked, this, &Widget_element::Export_Plot);
 
 }
-/*
+
 void Widget_element::Infor_DateTime()
 {
-	QLabel *label_infor = new QLabel;
-	//label_infor->setText(tr("Begin Date is %1 ").arg((begin_datetime->begin_date).toString()));
-	//label_infor->setText(tr("Begin Time is %1 ").arg((begin_datetime->begin_time).toString()));
-	lay->addWidget(label_infor);
+	QLabel *label_infor_begin_date = new QLabel;
+	QLabel *label_infor_begin_time = new QLabel;
+	QLabel *label_infor_end_date = new QLabel;
+	QLabel *label_infor_end_time = new QLabel;
+	label_infor_begin_date->setText(tr("Begin Date is %1 ").arg((begin_datetime->begin_date).toString()));
+	label_infor_begin_time->setText(tr("Begin Time is %1 ").arg((begin_datetime->begin_time).toString()));
+	label_infor_end_date->setText(tr("End Date is %1 ").arg((begin_datetime->end_date).toString()));
+	label_infor_end_time->setText(tr("End Time is %1 ").arg((begin_datetime->end_time).toString()));
+	lay->addWidget(label_infor_begin_date);
+	lay->addWidget(label_infor_begin_time);
+	lay->addWidget(label_infor_end_date);
+	lay->addWidget(label_infor_end_time);
+
 }
-*/
+
 
 void Widget_element::Export_Plot()
 {
@@ -58,6 +65,7 @@ void Widget_element::OpenFile()
 	{
 		DATA Points = Read_Data(Filename_list);
 		widget_plot->Display_graph(Points);
+		Infor_DateTime();
 	}
 	
 }
@@ -93,15 +101,11 @@ DATA Widget_element::Read_Data(QList<QString> Filename_list)
 {
 	
 	DATA Points;
-	auto *begin_datetime = new BEGIN_DATETIME;
-	QFile exports("C:\\Users\\admin\\Documents\\Visual Studio 2015\\Projects\\export.txt");
-	exports.open(QFile::WriteOnly | QIODevice::Truncate);
-	QTextStream out(&exports);
+	begin_datetime = new DATETIME;
 	
 	QRegExp rx_time("(\\d*\\.\\d*\\.\\d*\/\\d*\\:\\d*\\:\\d*)");
 	QRegExp rx_press_tempe("(\\d*\\.\\d+)");
 
-	qDebug() << Filename_list.size();
 	for (int i = 0; i < Filename_list.size(); i++)
 	{
 		int num_line = 1;  // The number of line
@@ -121,7 +125,7 @@ DATA Widget_element::Read_Data(QList<QString> Filename_list)
 				int pos_rx_press_tempe = 0; // position of values of pression and temperature in one line
 				pos_rx_time = rx_time.indexIn(line, pos_rx_time);
 
-				double time_in_double = Set_Time(rx_time.cap(1),i,num_line,begin_datetime);
+				double time_in_double = Set_Time(rx_time.cap(1),i,num_line,begin_datetime,Filename_list.size(),in.atEnd());
 
 				data_each_line.time = time_in_double;
 
@@ -167,7 +171,6 @@ DATA Widget_element::Read_Data(QList<QString> Filename_list)
 
 				}
 	
-				//out << data_each_line.time << '\t'<< data_each_line.mesure_temp_one_line[1]*100<<'\n';
 				mesure_temp_all_lines.append(data_each_line);
 			}
 			num_line++;
@@ -191,8 +194,6 @@ DATA Widget_element::Read_Data(QList<QString> Filename_list)
 		}
 	}
 
-
-	exports.close();
 	return Points;
 }
 

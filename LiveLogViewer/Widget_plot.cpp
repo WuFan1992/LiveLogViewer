@@ -20,7 +20,6 @@ Widget_plot::Widget_plot(QWidget *parent)
 }
 
 
-
 void Widget_plot::Set_Plot()
 {
 	auto* lay = new QVBoxLayout;
@@ -62,7 +61,7 @@ void Widget_plot::Set_Panner_Magnifier()
 
 void Widget_plot::Initialize_Display()
 {
-	QList<QColor> Color_list = { QColor(0,0,255),QColor(0,255,0),QColor(255, 0, 0), QColor(0, 0, 0) ,QColor(15, 15, 15),QColor(30, 30, 30),QColor(45, 45, 45),QColor(60, 60, 60),QColor(75, 75, 75),QColor(90, 90, 90),QColor(105, 105, 105),QColor(120, 120, 120),QColor(135,135,135),QColor(150,150,150),QColor(165, 165, 165),QColor(180, 180, 180),QColor(195, 195, 195),QColor(210, 210, 210),QColor(225, 225, 225),QColor(240, 240, 240) };
+	QList<QColor> Color_list = { QColor(0,0,255),QColor(0,255,0),QColor(255, 0, 0), QColor(255,255, 0) ,QColor(148, 0, 211),QColor(138, 43, 226),QColor(186, 85, 211),QColor(218, 112, 214),QColor(221, 160, 221),QColor(238, 130, 238),QColor(208, 32, 144),QColor(176, 48, 96),QColor(139,69,19),QColor(160,82,45),QColor(205, 133, 63),QColor(222, 184, 135),QColor(244, 164, 96),QColor(210, 180, 140),QColor(188, 143, 143),QColor(245, 222, 179) };
 
 	for (int i = 0; i < 20; i++)
 	{
@@ -84,9 +83,13 @@ void Widget_plot::Initialize_Display()
 		{
 			myplotcurve = new QwtPlotCurve("Target Temperature");
 		}
+		else if (i < 12)
+		{
+			myplotcurve = new QwtPlotCurve(tr("Temperature %1 (Left)").arg(i - 3));
+		}
 		else
 		{
-			myplotcurve = new QwtPlotCurve(tr("Temperature %1").arg(i - 3));
+			myplotcurve = new QwtPlotCurve(tr("Temperature %1 (Right)").arg(i - 3));
 		}
 		livelogviewer_curve.append(myplotcurve);
 		
